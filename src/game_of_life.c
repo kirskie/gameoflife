@@ -8,6 +8,9 @@
 #define DEF_DELAY 300
 #define MAX_DELAY 3000
 
+#define CL_ALIVE '@'
+#define CL_DEAD '.'
+
 // ====================================
 
 // инициализация поля из stdin или генератором
@@ -155,13 +158,13 @@ int read_row(char row[MAXX]) {
             break;
         }
 
-        if (character != '@' && character != '.') {
+        if (character != CL_ALIVE && character != CL_DEAD) {
             // не известный символ, выходим с ошибкой
             return -1;
         }
 
         // выставляем 1 при прочтении активной клетки
-        *(row + count) = character == '@';
+        *(row + count) = character == CL_ALIVE;
         // смещаем ячейку
         count++;
     }
@@ -205,8 +208,8 @@ unsigned int read_delay() {
 void print_greeting() {
     printf("Нажмите ввод для генерированного поля или введите поле вручную.\n");
     printf("Игровое поле имеет размер %d x %d символов, на котором живая\n", MAXX, MAXY);
-    printf("клетка - символ '@', а мёртвая клетка - символ '.'.\n");
-    printf("[!] Важно: любой символ кроме '@' и '.' считается ошибкой данных!\n");
+    printf("клетка - символ '%c', а мёртвая клетка - символ '%c'.\n", CL_ALIVE, CL_DEAD);
+    printf("[!] Важно: любой символ кроме '%c' и '%c' считается ошибкой данных!\n", CL_ALIVE, CL_DEAD);
 }
 
 void print_input_delay() {
@@ -224,9 +227,9 @@ void print_field(char field[MAXY][MAXX]) {
     for (int row = 0; row < MAXY; row++) {
         for (int col = 0; col < MAXX; col++) {
             if (field[row][col]) {
-                putchar('@');
+                putchar(CL_ALIVE);
             } else {
-                putchar('.');
+                putchar(CL_DEAD);
             }
         }
         putchar('\n');
